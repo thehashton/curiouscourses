@@ -1,6 +1,6 @@
 # CuriousCourses
 
-This is an E-learning platform with NextJS13 and Strapi
+This is an E-learning platform with NextJS13, Headless Strapi CMS, MUI etc
 
 ## Getting Started
 
