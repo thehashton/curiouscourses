@@ -1,4 +1,3 @@
-// useUserData.ts
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 

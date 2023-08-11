@@ -24,15 +24,10 @@ const LogoutPage = () => {
         // Clear the user data from state to trigger re-render
         setUserData(null);
         location.reload()
-        // router.push('/login'); // Replace '/profile' with your actual profile page route
     };
 
     const handleSignIn = () => {
-        // Remove the userData cookie to log the user out
-        // Cookies.remove('userData');
-        // // Clear the user data from state to trigger re-render
-        // setUserData(null);
-        router.push('/login'); // Replace '/profile' with your actual profile page route
+        router.push('/login');
     };
 
     return (
