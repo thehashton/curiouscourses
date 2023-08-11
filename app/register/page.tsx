@@ -16,9 +16,7 @@ const RegistrationForm: React.FC = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email, password }),
       });
-
       const data = await response.json();
-      console.log(data);
     } catch (error) {
       console.error('Registration error:', error);
     }

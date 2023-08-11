@@ -35,8 +35,6 @@ const LogoutPage = () => {
         router.push('/login'); // Replace '/profile' with your actual profile page route
     };
 
-    console.log(userData)
-
     return (
         <div className={scss.logout}>
             {

@@ -23,7 +23,7 @@ export default function RootLayout({
 
     return (
     <html lang="en">
-      <body style={{background: 'black', color: 'white'}}>
+      <body style={{background: 'black', color: 'white', maxWidth: '80rem', margin: 'auto'}}>
           <ThemeProvider theme={darkTheme}>
               <Header userData={userData}/>
               {children}
