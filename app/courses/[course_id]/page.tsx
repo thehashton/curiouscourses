@@ -14,6 +14,8 @@ import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import IconButton from "@mui/material/IconButton";
 import PsychologyAltIcon from "@mui/icons-material/PsychologyAlt";
 import CourseHeader from "@/app/components/CourseHeader";
+import scss from "./course.module.scss";
+
 const CoursePage = () => {
   const urlParts = window.location.pathname.split("/");
   const courseId = Number(urlParts[urlParts.length - 1]);
@@ -28,26 +30,25 @@ const CoursePage = () => {
         description={course?.description}
         user={course?.user}
       />
-      <Box
-        sx={{
-          display: "flex",
-          width: "100%",
-          bgcolor: "background.paper",
-          borderRadius: "8px",
-        }}
-      >
+      <Box className={scss.courseFrame} sx={{ bgcolor: "background.paper" }}>
         <nav>
           <List>
             {lessons?.slice(0, lessonAmount).map((lesson: any) => (
               <ListItemButton
                 key={lesson.id}
-                style={{ display: "flex", alignItems: "flex-start" }}
+                style={{ display: "flex", alignItems: "center" }}
                 component="a"
                 href={`/courses/${courseId}/lessons/${lesson.id}`}
               >
-                <SlowMotionVideoIcon fontSize="large" />
+                <div style={{ textAlign: "center" }}>
+                  <SlowMotionVideoIcon fontSize="large" />
+                  <Typography fontSize={"small"}>
+                    {lesson.attributes.duration}
+                  </Typography>
+                </div>
                 <div style={{ marginLeft: "1rem" }}>
                   <ListItemText
+                    style={{ margin: "0.5rem 0" }}
                     primary={lesson.attributes.title}
                     secondary={lesson.attributes.description}
                   />
@@ -78,7 +79,7 @@ const CoursePage = () => {
             </div>
           ) : (
             <IconButton>
-              <PlayCircleIcon fontSize={"large"}></PlayCircleIcon>
+              <PlayCircleIcon sx={{ fontSize: "4rem" }}></PlayCircleIcon>
             </IconButton>
           )}
         </Paper>
