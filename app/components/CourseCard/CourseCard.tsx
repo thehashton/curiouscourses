@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Paper } from "@mui/material";
+import { Avatar, Paper, Typography } from "@mui/material";
 import scss from "./CourseCard.module.scss";
 import Button from "@mui/material/Button";
 
@@ -25,16 +25,29 @@ const CourseCard = (props: CourseCardProps) => {
         variant={"elevation"}
         sx={{ p: 2, bgcolor: "background.default" }}
       >
-        <h2>{title}</h2>
-        <p>{description}</p>
-        <Button
-          href={`/courses/${courseId}`}
-          variant={"contained"}
-          size={"large"}
-          style={{ height: "3rem", marginTop: "auto" }}
+        <Typography
+          fontSize={12}
+          color={"primary.light"}
+          fontWeight={"bold"}
+          letterSpacing={3}
+          sx={{ textTransform: "uppercase" }}
         >
-          View Course
-        </Button>
+          Course
+        </Typography>
+        <Typography
+          variant={"body1"}
+          fontWeight={"bold"}
+          fontSize={"16px"}
+          component={"h2"}
+          sx={{ marginBottom: "0.25rem" }}
+        >
+          {title}
+        </Typography>
+        <Typography fontSize={"medium"}>{description}</Typography>
+        <div className={scss.author} style={{ marginBottom: "1rem" }}>
+          <Avatar sx={{ height: 34, width: 34 }} />
+          <Typography fontSize={"small"}>Harry Ashton</Typography>
+        </div>
       </Paper>
     </Link>
   );
