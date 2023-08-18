@@ -87,7 +87,7 @@ export default function RootLayout({
               currentMode={mode}
               showLabel={false}
             />
-            {children}
+            <main style={{ padding: "2rem" }}>{children}</main>
           </body>
         </ThemeProvider>
       </html>
