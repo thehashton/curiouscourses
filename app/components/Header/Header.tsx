@@ -61,6 +61,11 @@ const Header: React.FC<HeaderProps> = ({
                   <Typography>Profile</Typography>
                 </Link>
               </li>
+              <li>
+                <Link href="/courses">
+                  <Typography>Courses</Typography>
+                </Link>
+              </li>
             </>
           )}
           <li style={{ marginLeft: "auto" }}>

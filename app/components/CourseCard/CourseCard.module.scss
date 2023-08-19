@@ -1,0 +1,22 @@
+.CourseCard {
+  display: grid;
+  max-width: 20rem;
+  border-radius: 8px;
+  height: 100%;
+  width: 100%;
+}
+
+.courseLink {
+  display: flex;
+  justify-content: center;
+ text-align: center;
+}
+
+.author {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 0 0 0;
+  margin: 0 !important;
+}
