@@ -8,7 +8,7 @@ const useFetchCoursesData = (): any => {
     async function fetchCoursesData() {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/courses?populate=lessons",
+          "http://localhost:1337/api/courses?populate=*",
         );
 
         if (!response.ok) {

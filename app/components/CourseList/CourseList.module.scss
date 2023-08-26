@@ -1,0 +1,15 @@
+.CourseList {
+  padding: 0 !important; // overriding MUI
+  max-height: 30rem;
+  overflow: auto;
+}
+
+.lessonNavigation {
+  min-width: 25rem;
+}
+
+.listItem {
+  display: flex;
+  align-items: center;
+  margin-right: 0.25rem !important;
+}
