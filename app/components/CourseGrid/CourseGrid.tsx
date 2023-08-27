@@ -1,51 +1,30 @@
 import React from "react";
 import CourseCard from "@/app/components/CourseCard/CourseCard";
 import scss from "./CourseGrid.module.scss";
+import { CourseDataType } from "@/app/courses/course.types";
 
 export type CourseGridProps = {
   courseData: CourseDataType[];
 };
 
-export type CourseDataType = {
-  id: number;
-  attributes: {
-    title: string;
-    description: string;
-    createdAt: string;
-    publishedAt: string;
-    updatedAt: string;
-    lessons: LessonDataType[];
-  };
-};
-
-export type LessonDataType = {
-  data: {
-    id: number;
-    attributes: {
-      title: string;
-      description: string;
-      duration: string;
-      video_url: string;
-      createdAt: string;
-      publishedAt: string;
-      updatedAt: string;
-    };
-  }[];
-};
-
 const CourseGrid = (props: CourseGridProps) => {
   const { courseData } = props;
-  console.log(courseData);
   return (
     <section className={scss.CourseGrid}>
-      {courseData.map((course: CourseDataType) => (
-        <CourseCard
-          key={course.id}
-          courseId={course.id}
-          title={course.attributes.title}
-          description={course.attributes.description}
-        />
-      ))}
+      {courseData.map((course: CourseDataType, id: number) => {
+        const thumbnailUrl =
+          course.attributes?.thumbnail?.data?.attributes?.url;
+        return (
+          <div key={course.id}>
+            <CourseCard
+              courseId={course.id}
+              title={course.attributes.title}
+              thumbnail={thumbnailUrl ? thumbnailUrl : ""}
+              description={course.attributes.description}
+            />
+          </div>
+        );
+      })}
     </section>
   );
 };

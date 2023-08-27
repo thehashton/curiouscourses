@@ -1,15 +1,28 @@
 .CourseCard {
+  position: relative;
   display: grid;
   max-width: 20rem;
-  border-radius: 8px;
+  border-radius: 8px !important;
   height: 100%;
   width: 100%;
+  background-size: cover;
+  background-position: top;
+  min-height: 15rem;
+  transition: all 300ms ease-out;
+
+  &:hover {
+    transition: all 300ms ease-in;
+    transform: scale(1.02);
+    opacity: 1;
+  }
 }
 
 .courseLink {
   display: flex;
   justify-content: center;
- text-align: center;
+  text-align: center;
+  text-decoration: none;
+  width: 100%;
 }
 
 .author {
@@ -19,4 +32,10 @@
   gap: 0.5rem;
   padding: 1rem 0 0 0;
   margin: 0 !important;
+}
+
+.cardImage {
+  position: relative;
+  margin: auto;
+  top: -2rem;
 }

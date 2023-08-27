@@ -1,30 +1,41 @@
+"use client";
 import React from "react";
 import Link from "next/link";
 import { Avatar, Paper, Typography } from "@mui/material";
 import scss from "./CourseCard.module.scss";
-import Button from "@mui/material/Button";
+import Image from "next/image";
 
 export type CourseCardProps = {
-  key: number;
   title: string;
   description: string;
   courseId: number;
+  thumbnail: string;
 };
 
 const CourseCard = (props: CourseCardProps) => {
-  const { key, title, description, courseId } = props;
+  const { title, description, courseId, thumbnail } = props;
   return (
-    <Link
-      className={scss.courseLink}
-      href={`/courses/${courseId}`}
-      style={{ textDecoration: "none", width: "100%" }}
-    >
+    <Link className={scss.courseLink} href={`/courses/${courseId}`}>
       <Paper
         className={scss.CourseCard}
-        key={key}
         variant={"elevation"}
-        sx={{ p: 2, bgcolor: "background.default" }}
+        sx={{
+          p: 2,
+          backgroundColor: "transparent",
+        }}
       >
+        <Image
+          className={scss.cardImage}
+          src={
+            thumbnail
+              ? `${process?.env?.NEXT_PUBLIC_STRAPI_IMAGES_DOMAIN}${thumbnail}`
+              : ""
+          }
+          alt={title}
+          title={description}
+          width={150}
+          height={150}
+        />
         <Typography
           fontSize={12}
           color={"primary.light"}
@@ -43,7 +54,7 @@ const CourseCard = (props: CourseCardProps) => {
         >
           {title}
         </Typography>
-        <Typography fontSize={"medium"}>{description}</Typography>
+        <Typography fontSize={"small"}>{description}</Typography>
         <div className={scss.author} style={{ marginBottom: "1rem" }}>
           <Avatar sx={{ height: 34, width: 34 }} />
           <Typography fontSize={"small"}>Harry Ashton</Typography>

@@ -2,7 +2,6 @@
 import React from "react";
 import useFetchCoursesData from "../hooks/useFetchCourseData";
 import CourseGrid from "@/app/components/CourseGrid/CourseGrid";
-import { Typography } from "@mui/material";
 import CourseHeader from "@/app/components/CourseHeader";
 
 const CoursePage = () => {
