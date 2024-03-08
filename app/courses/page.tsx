@@ -1,14 +1,12 @@
 "use client";
-import React from "react";
-import useFetchCoursesData from "../hooks/useFetchCourseData";
 import CourseGrid from "@/app/components/CourseGrid/CourseGrid";
 import CourseHeader from "@/app/components/CourseHeader";
+import FetchCoursesData from "@/app/hooks/useFetchCourseData";
 
 const CoursePage = () => {
-  const courses = useFetchCoursesData();
-
+  const courseDetails = FetchCoursesData();
   return (
-    <div>
+    <>
       <CourseHeader
         href={"/"}
         title={"Courses"}
@@ -16,8 +14,8 @@ const CoursePage = () => {
           "Choose from our many courses on Frontend development and start your learning journey today!"
         }
       />
-      <CourseGrid courseData={courses} />
-    </div>
+      <CourseGrid courseData={courseDetails} />
+    </>
   );
 };
 

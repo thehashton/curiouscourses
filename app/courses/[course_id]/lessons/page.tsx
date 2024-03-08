@@ -1,11 +1,11 @@
 "use client";
 import React from "react";
-import useFetchCoursesData from "../../../hooks/useFetchCourseData";
+import UseFetchCoursesData from "../../../hooks/useFetchCourseData";
 import { Typography } from "@mui/material";
 import Link from "next/link";
 
 const LessonsPage = () => {
-  const courses = useFetchCoursesData();
+  const courses = UseFetchCoursesData();
 
   const lessonAmount = (id: number) =>
     courses[id].attributes?.lessons?.data.length;

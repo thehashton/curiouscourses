@@ -1,19 +1,25 @@
-import React, { useState, useEffect } from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import scss from "./CourseList.module.scss";
 import { LessonType } from "@/app/courses/course.types";
 import { List, ListItemButton, ListItemText, Typography } from "@mui/material";
 import SlowMotionVideoIcon from "@mui/icons-material/SlowMotionVideo";
 import { useSearchParams } from "next/navigation";
 import { useTheme } from "@mui/material/styles";
+import Cookies from "js-cookie";
+import { UserData } from "@/app/login/page";
+import { updateCourseAndLessonProgress } from "@/app/service/userProgress/updateUserProgress";
+import UseFetchCourseData from "@/app/hooks/useFetchCourseData";
 
 export type CourseListProps = {
   lessons: LessonType[];
   lessonAmount: number;
   courseId: number;
+  courseName: string;
 };
 
 const CourseList = (props: CourseListProps) => {
-  const { lessons, lessonAmount, courseId } = props;
+  const { lessons, lessonAmount, courseId, courseName } = props;
   const [selectedLessonId, setSelectedLessonId] = useState<number | null>(null);
   const searchParams = useSearchParams();
   const lessonParamId = searchParams.get("lessonId");
@@ -24,7 +30,10 @@ const CourseList = (props: CourseListProps) => {
     setSelectedLessonId(lessonParamId ? parseInt(lessonParamId, 10) : 1);
   }, [lessonParamId]);
 
-  const handleLessonClick = (lessonId: number) => {
+  const [courseDetails] = UseFetchCourseData(courseId.toString());
+  const userData: UserData = JSON.parse(Cookies.get("userData") as string);
+
+  const handleLessonClick = async (lessonId: number) => {
     const lessonName = lessons[lessonId - 1]?.attributes.title;
     const formattedLessonName = lessonName?.replace(/\s+/g, "");
     const newUrl = `/courses/${courseId}?lessonId=${lessonId}&lessonName=${formattedLessonName}`;
@@ -32,6 +41,44 @@ const CourseList = (props: CourseListProps) => {
     setSelectedLessonId(lessonId);
     window.location.reload();
   };
+
+  useEffect(() => {
+    // Update progress when the selected lesson changes
+    const updateProgress = async () => {
+      const lesson = lessons?.find((l) => l.id === selectedLessonId);
+      if (lesson && userData?.id) {
+        await updateCourseAndLessonProgress(
+          userData.id.toString(),
+          {
+            courseId: courseId.toString(),
+            courseName: courseName,
+            lessonTotal: lessonAmount,
+            thumbnailUrl: courseDetails?.attributes?.thumbnailUrl,
+            courseDescription: courseDetails?.attributes?.description,
+            courseProgress: courseDetails?.attributes?.courseProgress,
+          },
+          {
+            lessonId: selectedLessonId,
+            lessonName: lesson.attributes.title,
+            lessonDescription: lesson.attributes.description,
+            completed: true, // add your own custom condition here
+          },
+        );
+      }
+    };
+
+    if (selectedLessonId) {
+      updateProgress().then((r) => r);
+    }
+  }, [
+    selectedLessonId,
+    lessons,
+    userData,
+    courseId,
+    courseName,
+    lessonAmount,
+    courseDetails,
+  ]);
 
   return (
     <nav className={scss.lessonNavigation}>

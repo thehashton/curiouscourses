@@ -1,11 +1,11 @@
 "use client";
 import CourseGrid from "@/app/components/CourseGrid/CourseGrid";
 import React from "react";
-import useFetchCoursesData from "@/app/hooks/useFetchCourseData";
 import Hero from "@/app/components/Hero";
+import UseFetchCoursesData from "@/app/hooks/useFetchCourseData";
 
 export default function Home() {
-  const courses = useFetchCoursesData();
+  const courses = UseFetchCoursesData();
 
   return (
     <>

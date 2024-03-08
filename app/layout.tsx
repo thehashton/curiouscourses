@@ -23,7 +23,8 @@ export default function RootLayout({
     toggleColorMode: () => {},
   });
 
-  const storedTheme = localStorage.getItem("theme");
+  const storedTheme =
+    typeof window !== "undefined" ? localStorage.getItem("theme") : null;
   const initialMode = storedTheme || "dark";
   const [mode, setMode] = useState<"light" | "dark">(
     initialMode as "light" | "dark",
@@ -31,7 +32,10 @@ export default function RootLayout({
 
   // Update stored theme when mode changes
   useEffect(() => {
-    localStorage.setItem("theme", mode);
+    // Check if 'window' is defined which means it's running in the browser
+    if (typeof window !== "undefined") {
+      localStorage.setItem("theme", mode);
+    }
   }, [mode]);
 
   const colorMode = useMemo(
@@ -45,7 +49,6 @@ export default function RootLayout({
 
   const userData = useUserData();
   const chosenTheme = mode === "dark" ? darkTheme : lightTheme;
-
   return (
     <ThemeMUIMode.Provider value={colorMode}>
       <html lang="en">

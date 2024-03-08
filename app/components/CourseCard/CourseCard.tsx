@@ -4,16 +4,26 @@ import Link from "next/link";
 import { Avatar, Paper, Typography } from "@mui/material";
 import scss from "./CourseCard.module.scss";
 import Image from "next/image";
+import LinearProgress from "@mui/material/LinearProgress";
 
 export type CourseCardProps = {
   title: string;
   description: string;
   courseId: number;
   thumbnail: string;
+  courseProgress?: string;
+  courseComplete?: boolean;
 };
 
 const CourseCard = (props: CourseCardProps) => {
-  const { title, description, courseId, thumbnail } = props;
+  const {
+    title,
+    description,
+    courseId,
+    thumbnail,
+    courseProgress = 0,
+    courseComplete = false,
+  } = props;
   return (
     <Link className={scss.courseLink} href={`/courses/${courseId}`}>
       <Paper
@@ -59,6 +69,11 @@ const CourseCard = (props: CourseCardProps) => {
           <Avatar sx={{ height: 34, width: 34 }} />
           <Typography fontSize={"small"}>Harry Ashton</Typography>
         </div>
+        <LinearProgress
+          variant="determinate"
+          value={parseInt(String(courseProgress), 10)}
+          sx={{ height: "20px" }}
+        />
       </Paper>
     </Link>
   );

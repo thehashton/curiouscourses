@@ -6,11 +6,14 @@ import Button from "@mui/material/Button";
 import scss from "./login.module.scss";
 import { Typography } from "@mui/material";
 
-interface UserData {
-  authToken: string;
+export type UserData = {
+  id: number;
   userName: string;
+  email: string;
+  authToken: string;
   isLoggedIn: boolean;
-}
+  createdAt?: string;
+};
 
 const LoginPage: React.FC = () => {
   const [identifier, setIdentifier] = useState("");
@@ -38,8 +41,10 @@ const LoginPage: React.FC = () => {
       if (response.ok) {
         // Format the user-related data before storing in the cookie
         const userData = {
-          authToken: data.jwt,
+          id: data.user.id,
           userName: data.user.username,
+          email: data.user.email,
+          authToken: data.jwt,
           isLoggedIn: data.user.confirmed,
         };
 

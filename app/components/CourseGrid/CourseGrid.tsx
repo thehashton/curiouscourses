@@ -11,7 +11,7 @@ const CourseGrid = (props: CourseGridProps) => {
   const { courseData } = props;
   return (
     <section className={scss.CourseGrid}>
-      {courseData.map((course: CourseDataType, id: number) => {
+      {courseData?.map((course: CourseDataType) => {
         const thumbnailUrl =
           course.attributes?.thumbnail?.data?.attributes?.url;
         return (
@@ -21,6 +21,7 @@ const CourseGrid = (props: CourseGridProps) => {
               title={course.attributes.title}
               thumbnail={thumbnailUrl ? thumbnailUrl : ""}
               description={course.attributes.description}
+              courseProgress={course.attributes.courseProgress}
             />
           </div>
         );

@@ -6,6 +6,7 @@ export type CourseDataType = {
     createdAt: string;
     publishedAt: string;
     updatedAt: string;
+    courseProgress: string;
     lessons: LessonDataType[];
     thumbnail: {
       data: {
