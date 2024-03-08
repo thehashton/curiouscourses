@@ -15,7 +15,7 @@ const CoursePage = () => {
   const lessons = course?.lessons?.data;
   const lessonAmount = lessons?.length;
 
-  const [selectedLessonId, setSelectedLessonId] = useState<string | number>(1);
+  const [selectedLessonId, setSelectedLessonId] = useState<number>(1);
   const searchParams = useSearchParams();
   const lessonParamId = searchParams.get("lessonId");
   const lessonVideoUrl = lessons
@@ -39,6 +39,7 @@ const CoursePage = () => {
           lessons={lessons}
           lessonAmount={lessonAmount}
           courseId={courseId}
+          courseName={course?.title}
         />
         <CoursePlayer lessons={lessons} lessonVideoUrl={lessonVideoUrl} />
       </Box>

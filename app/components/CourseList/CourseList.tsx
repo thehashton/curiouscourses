@@ -5,15 +5,20 @@ import { List, ListItemButton, ListItemText, Typography } from "@mui/material";
 import SlowMotionVideoIcon from "@mui/icons-material/SlowMotionVideo";
 import { useSearchParams } from "next/navigation";
 import { useTheme } from "@mui/material/styles";
+import Cookies from "js-cookie";
+import { UserData } from "@/app/login/page";
+import { updateCourseAndLessonProgress } from "@/app/service/userProgress/updateUserProgress";
+import { fetchAllUserProgress } from "@/app/service/userProgress/fetchAllUserProgress";
 
 export type CourseListProps = {
   lessons: LessonType[];
   lessonAmount: number;
   courseId: number;
+  courseName: string;
 };
 
 const CourseList = (props: CourseListProps) => {
-  const { lessons, lessonAmount, courseId } = props;
+  const { lessons, lessonAmount, courseId, courseName } = props;
   const [selectedLessonId, setSelectedLessonId] = useState<number | null>(null);
   const searchParams = useSearchParams();
   const lessonParamId = searchParams.get("lessonId");
@@ -24,12 +29,36 @@ const CourseList = (props: CourseListProps) => {
     setSelectedLessonId(lessonParamId ? parseInt(lessonParamId, 10) : 1);
   }, [lessonParamId]);
 
-  const handleLessonClick = (lessonId: number) => {
+  const userData: UserData = JSON.parse(Cookies.get("userData") as string);
+  // This is a simplified example. You might have a more complex logic based on your application's needs.
+
+  // Example of calling the function in a React component
+  useEffect(() => {
+    fetchAllUserProgress()
+      .then((progress) => {
+        // Do something with the progress data
+        console.log(progress);
+      })
+      .catch((error) => {
+        console.error("Failed to fetch progress:", error);
+      });
+  }, []); // Empty dependency array means this runs once on component mount
+  const handleLessonClick = async (lessonId: number) => {
     const lessonName = lessons[lessonId - 1]?.attributes.title;
     const formattedLessonName = lessonName?.replace(/\s+/g, "");
     const newUrl = `/courses/${courseId}?lessonId=${lessonId}&lessonName=${formattedLessonName}`;
     window.history.replaceState(null, "", newUrl);
     setSelectedLessonId(lessonId);
+
+    await updateCourseAndLessonProgress(
+      userData?.id.toString(),
+      {
+        courseId: courseId.toString(),
+        courseName: courseName,
+        lessonTotal: lessonAmount,
+      },
+      { lessonId: lessonId, lessonName: lessonName, completed: true },
+    );
     window.location.reload();
   };
 

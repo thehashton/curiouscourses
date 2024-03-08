@@ -9,7 +9,7 @@ import ThemeToggleButton from "@/app/components/ThemeToggleButton";
 import { UserDataType } from "@/app/hooks/useUserData";
 
 interface HeaderProps {
-  userData: UserDataType | null;
+  userData: UserDataType | undefined;
   ColorModeContext: React.Context<{ toggleColorMode: () => void }>;
   currentMode: "light" | "dark"; // Prop for the current mode
   showLabel?: boolean;
