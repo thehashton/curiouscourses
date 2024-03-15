@@ -2,7 +2,6 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyBC1rjBlddp2I2MSHC8UWMorsmNwxcSXZc",
   authDomain: "notional-media-379200.firebaseapp.com",
@@ -13,11 +12,7 @@ const firebaseConfig = {
   measurementId: "G-H6G66G0K6F",
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-// Possibly not needed
 const db = getFirestore(app);
 
-// wtf is this? Is this needed
 export default db;

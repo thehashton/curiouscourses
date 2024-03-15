@@ -8,8 +8,11 @@ import { useTheme } from "@mui/material/styles";
 import Cookies from "js-cookie";
 import { UserData } from "@/app/login/page";
 import { updateCourseAndLessonProgress } from "@/app/service/userProgress/updateUserProgress";
-import { fetchAllUserProgress } from "@/app/service/userProgress/fetchAllUserProgress";
 
+import { collectionGroup, getDocs } from "firebase/firestore";
+import db from "@/firebaseInit";
+import { fetchAllLessons } from "@/app/service/userProgress/fetchAllLessons";
+require("firebase/firestore");
 export type CourseListProps = {
   lessons: LessonType[];
   lessonAmount: number;
@@ -29,20 +32,46 @@ const CourseList = (props: CourseListProps) => {
     setSelectedLessonId(lessonParamId ? parseInt(lessonParamId, 10) : 1);
   }, [lessonParamId]);
 
+  const [lesson, processLesson] = useState([]);
   const userData: UserData = JSON.parse(Cookies.get("userData") as string);
-  // This is a simplified example. You might have a more complex logic based on your application's needs.
+  // const userId = userData?.id.toString();
 
-  // Example of calling the function in a React component
-  useEffect(() => {
-    fetchAllUserProgress()
-      .then((progress) => {
-        // Do something with the progress data
-        console.log(progress);
-      })
-      .catch((error) => {
-        console.error("Failed to fetch progress:", error);
+  async function fetchAllCourses() {
+    try {
+      const querySnapshot = await getDocs(collectionGroup(db, "Courses"));
+      querySnapshot.forEach((doc) => {
+        console.log(doc.id, " => ", doc.data());
       });
-  }, []); // Empty dependency array means this runs once on component mount
+
+      if (querySnapshot.empty) {
+        console.log("No courses found.");
+      }
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+    }
+  }
+  // CONSOLE LOG LESSONS
+  useEffect(() => {
+    // fetchAllCourses();
+    fetchAllLessons()
+      .then((lessonsArray) => {
+        // Do something with the lessons array
+        console.log(lessonsArray);
+      })
+      .catch(console.error);
+  }, []);
+
+  // CONSOLE LOG COURSES
+  useEffect(() => {
+    // fetchAllCourses();
+    fetchAllCourses()
+      .then((lessonsArray) => {
+        // Do something with the lessons array
+        console.log(lessonsArray);
+      })
+      .catch(console.error);
+  }, []);
+
   const handleLessonClick = async (lessonId: number) => {
     const lessonName = lessons[lessonId - 1]?.attributes.title;
     const formattedLessonName = lessonName?.replace(/\s+/g, "");

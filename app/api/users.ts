@@ -14,7 +14,7 @@ export default async (req: any, res: any) => {
 
     if (response.ok) {
       res.status(200).json(data);
-      console.log(data);
+      // console.log(data);
     } else {
       res.status(data.statusCode).json({ error: "Failed to fetch user data" });
     }
