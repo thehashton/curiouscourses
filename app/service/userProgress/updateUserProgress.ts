@@ -1,4 +1,11 @@
-import { doc, getDoc, writeBatch, serverTimestamp } from "firebase/firestore";
+import {
+  doc,
+  writeBatch,
+  serverTimestamp,
+  collection,
+  query,
+  getDocs,
+} from "firebase/firestore";
 import db from "@/firebaseInit";
 import {
   CourseDetails,
@@ -21,38 +28,45 @@ export async function updateCourseAndLessonProgress(
     courseDetails.courseId,
   );
 
-  // Check if the course exists, create or update accordingly
-  const courseDocSnap = await getDoc(courseDocRef);
-  if (!courseDocSnap.exists()) {
-    console.log("Creating new course document with initial details.");
-    batch.set(courseDocRef, {
-      courseId: courseDetails.courseId,
-      courseName: courseDetails.courseName,
-      lessonTotal: courseDetails.lessonTotal,
-      courseProgress: 0, // Initialize progress
-      courseCompleted: false, // Initialize completion status
-    });
-  }
-
   // Correctly reference the lesson document within the course
-  // Note: Ensure lessonId is passed as a string
   const lessonDocRef = doc(
-    db,
-    "user-progress",
-    userId,
-    "Courses",
-    courseDetails.courseId,
+    courseDocRef,
     "Lessons",
     lessonDetails.lessonId.toString(),
   );
 
-  console.log("Updating or creating lesson document.");
-  batch.set(lessonDocRef, {
-    lessonId: lessonDetails.lessonId,
-    lessonName: lessonDetails.lessonName,
-    completed: lessonDetails.completed,
-    dateCompleted: serverTimestamp(), // Add server timestamp for date completed
-  }); // Use merge to avoid overwriting other fields unintentionally
+  // Set the lesson as completed
+  batch.set(
+    lessonDocRef,
+    {
+      ...lessonDetails, // Assuming lessonDetails includes 'completed: true' and other necessary details
+      dateCompleted: serverTimestamp(), // Add server timestamp for date completed
+    },
+    { merge: true },
+  );
+
+  // Fetch all lessons to check completion status
+  const lessonsQuery = query(collection(courseDocRef, "Lessons"));
+  const lessonsSnapshot = await getDocs(lessonsQuery);
+  let completedLessonsCount = 1;
+
+  lessonsSnapshot.forEach((doc) => {
+    if (doc.data().completed) {
+      completedLessonsCount++;
+    }
+  });
+
+  let allLessonsCompleted = completedLessonsCount === courseDetails.lessonTotal;
+
+  // Update course document with the new progress and completion status
+  batch.set(
+    courseDocRef,
+    {
+      courseProgress: (completedLessonsCount / courseDetails.lessonTotal) * 100,
+      courseCompleted: allLessonsCompleted,
+    },
+    { merge: true },
+  );
 
   try {
     // Commit the batch operation
