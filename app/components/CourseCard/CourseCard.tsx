@@ -12,7 +12,7 @@ export type CourseCardProps = {
   courseId: number;
   thumbnail: string;
   courseProgress?: string;
-  courseComplete?: boolean;
+  courseCompleted?: boolean;
 };
 
 const CourseCard = (props: CourseCardProps) => {
@@ -21,8 +21,8 @@ const CourseCard = (props: CourseCardProps) => {
     description,
     courseId,
     thumbnail,
-    courseProgress = 0,
-    courseComplete = false,
+    courseProgress = "0",
+    courseCompleted = false,
   } = props;
   return (
     <Link className={scss.courseLink} href={`/courses/${courseId}`}>
@@ -71,8 +71,9 @@ const CourseCard = (props: CourseCardProps) => {
         </div>
         <LinearProgress
           variant="determinate"
+          color={`${courseCompleted ? "success" : "primary"}`}
           value={parseInt(String(courseProgress), 10)}
-          sx={{ height: "20px" }}
+          sx={{ height: "20px", marginTop: "20px", borderRadius: "8px" }}
         />
       </Paper>
     </Link>

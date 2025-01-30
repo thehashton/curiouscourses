@@ -9,7 +9,8 @@ import CoursePlayer from "@/app/components/CoursePlayer";
 import { useSearchParams } from "next/navigation";
 
 const CoursePage = () => {
-  const urlParts = window.location.pathname.split("/");
+  const urlParts =
+    typeof window !== "undefined" ? window.location.pathname.split("/") : "";
   const courseId = Number(urlParts[urlParts.length - 1]);
   const course = UseFetchCoursesData()[courseId - 1]?.attributes;
   const lessons = course?.lessons?.data;
