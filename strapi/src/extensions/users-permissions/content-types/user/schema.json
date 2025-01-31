@@ -78,6 +78,12 @@
       "relation": "oneToOne",
       "target": "api::lesson.lesson",
       "mappedBy": "user"
+    },
+    "WatchedLessons": {
+      "displayName": "WatchedLessons",
+      "type": "component",
+      "repeatable": true,
+      "component": "watched-lessons.watched-lessons"
     }
   }
 }

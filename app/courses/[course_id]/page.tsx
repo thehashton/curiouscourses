@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Box } from "@mui/material";
-import useFetchCoursesData from "@/app/hooks/useFetchCourseData";
+import UseFetchCoursesData from "@/app/hooks/useFetchCourseData";
 import CourseHeader from "@/app/components/CourseHeader";
 import scss from "./course.module.scss";
 import CourseList from "@/app/components/CourseList";
@@ -9,13 +9,14 @@ import CoursePlayer from "@/app/components/CoursePlayer";
 import { useSearchParams } from "next/navigation";
 
 const CoursePage = () => {
-  const urlParts = window.location.pathname.split("/");
+  const urlParts =
+    typeof window !== "undefined" ? window.location.pathname.split("/") : "";
   const courseId = Number(urlParts[urlParts.length - 1]);
-  const course = useFetchCoursesData()[courseId - 1]?.attributes;
+  const course = UseFetchCoursesData()[courseId - 1]?.attributes;
   const lessons = course?.lessons?.data;
   const lessonAmount = lessons?.length;
 
-  const [selectedLessonId, setSelectedLessonId] = useState<string | number>(1);
+  const [selectedLessonId, setSelectedLessonId] = useState<number>(1);
   const searchParams = useSearchParams();
   const lessonParamId = searchParams.get("lessonId");
   const lessonVideoUrl = lessons
@@ -39,6 +40,7 @@ const CoursePage = () => {
           lessons={lessons}
           lessonAmount={lessonAmount}
           courseId={courseId}
+          courseName={course?.title}
         />
         <CoursePlayer lessons={lessons} lessonVideoUrl={lessonVideoUrl} />
       </Box>

@@ -1,26 +1,53 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import CourseCard from "@/app/components/CourseCard/CourseCard";
+import FetchCoursesData from "@/app/hooks/useFetchCourseData";
 import scss from "./CourseGrid.module.scss";
-import { CourseDataType } from "@/app/courses/course.types";
+import { fetchUserProgress } from "@/app/service/userProgress/fetchUserProgress";
 
 export type CourseGridProps = {
-  courseData: CourseDataType[];
+  courseData: any;
+  userId: string;
 };
 
-const CourseGrid = (props: CourseGridProps) => {
-  const { courseData } = props;
+const CourseGrid = ({ courseData, userId }: CourseGridProps) => {
+  const [progressData, setProgressData] = useState<{ [key: string]: any }>({});
+
+  useEffect(() => {
+    const fetchProgress = async () => {
+      if (!userId) return;
+      try {
+        const data = await fetchUserProgress(userId);
+        setProgressData(data);
+      } catch (error) {
+        console.error("Error fetching progress:", error);
+      }
+    };
+
+    fetchProgress();
+  }, [userId]);
+
   return (
     <section className={scss.CourseGrid}>
-      {courseData.map((course: CourseDataType, id: number) => {
+      {courseData?.map((course: any) => {
+        const courseIdStr = course.id.toString();
+        const courseProgress =
+          progressData?.[courseIdStr]?.courseProgress || "0";
+        const courseCompleted =
+          progressData?.[courseIdStr]?.courseCompleted || false;
         const thumbnailUrl =
           course.attributes?.thumbnail?.data?.attributes?.url;
+
         return (
           <div key={course.id}>
             <CourseCard
               courseId={course.id}
               title={course.attributes.title}
-              thumbnail={thumbnailUrl ? thumbnailUrl : ""}
+              thumbnail={thumbnailUrl || ""}
               description={course.attributes.description}
+              courseProgress={courseProgress}
+              courseCompleted={courseCompleted}
             />
           </div>
         );
