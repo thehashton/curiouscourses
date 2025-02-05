@@ -1,6 +1,11 @@
 .Hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  place-content: center;
+  align-items: center;
+  gap: 20px;
   height: 20rem;
-  background-color: red;
   border-radius: 4px;
   margin: 0 0 2rem 0 ;
   padding: 2rem;
